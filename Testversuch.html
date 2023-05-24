@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add TalkBack Command</title>
+</head>
+<body>
+  <h1>Add TalkBack Command</h1>
+
+  <form id="addForm">
+    <label for="command">Command:</label>
+    <input type="text" id="command" name="command" placeholder="Enter command" required>
+    <br>
+    <button type="submit">Add Command</button>
+  </form>
+
+  <script>
+    // Function to handle form submission
+    function addTalkBackCommand(event) {
+      event.preventDefault(); // Prevent the default form submission behavior
+
+      // Get the input value
+      var command = document.getElementById("command").value;
+
+      // Construct the API endpoint URL
+      var apiKey = "NDM7ENHH0Q3QCWNC";
+      var talkBackID = "48996";
+      var url = "https://api.thingspeak.com/talkbacks/" + talkBackID + "/commands.json";
+
+      // Create an XMLHttpRequest object
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      // Set up the callback function for request completion
+      xhr.onload = function() {
+        if (xhr.status === 201) {
+          console.log("Command added successfully");
+        } else {
+          console.log("Failed to add command");
+        }
+      };
+
+      // Create the request payload
+      var data = "api_key=" + apiKey + "&command_string=" + encodeURIComponent(command);
+
+      // Send the POST request
+      xhr.send(data);
+    }
+
+    // Add event listener to the form
+    var form = document.getElementById("addForm");
+    form.addEventListener("submit", addTalkBackCommand);
+  </script>
+</body>
+</html>
