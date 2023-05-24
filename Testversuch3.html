@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add TalkBack Command</title>
+</head>
+<body>
+  <h1>Add TalkBack Command</h1>
+
+  <button id="button1">Command 1</button>
+  <button id="button2">Command 2</button>
+
+  <script>
+    // Function to handle button click and add talkback command
+    function addTalkBackCommand(command) {
+      // Construct the API endpoint URL
+      var apiKey = "NDM7ENHH0Q3QCWNC";
+      var talkBackID = "48996";
+      var url = "https://api.thingspeak.com/talkbacks/" + talkBackID + "/commands.json";
+
+      // Create an XMLHttpRequest object
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      // Set up the callback function for request completion
+      xhr.onload = function() {
+        if (xhr.status === 201) {
+          console.log("Command added successfully");
+        } else {
+          console.log("Failed to add command");
+        }
+      };
+
+      // Create the request payload
+      var data = "api_key=" + apiKey + "&command_string=" + encodeURIComponent(command);
+
+      // Send the POST request
+      xhr.send(data);
+    }
+
+    // Add event listener when the DOM content is loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      // Add event listener to button 1
+      var button1 = document.getElementById("button1");
+      button1.addEventListener("click", function() {
+        addTalkBackCommand("Command 1");
+      });
+
+      // Add event listener to button 2
+      var button2 = document.getElementById("button2");
+      button2.addEventListener("click", function() {
+        addTalkBackCommand("Command 2");
+      });
+    });
+  </script>
+</body>
+</html>
