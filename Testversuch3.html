@@ -6,8 +6,8 @@
 <body>
   <h1>Add TalkBack Command</h1>
 
-  <button id="button1">Command 1</button>
-  <button id="button2">Command 2</button>
+  <button id="button1">TURN_ON</button>
+  <button id="button2">TURN_OFF</button>
 
   <script>
     // Function to handle button click and add talkback command
@@ -43,13 +43,13 @@
       // Add event listener to button 1
       var button1 = document.getElementById("button1");
       button1.addEventListener("click", function() {
-        addTalkBackCommand("Command 1");
+        addTalkBackCommand("TURN_ON");
       });
 
       // Add event listener to button 2
       var button2 = document.getElementById("button2");
       button2.addEventListener("click", function() {
-        addTalkBackCommand("Command 2");
+        addTalkBackCommand("TURN_OFF");
       });
     });
   </script>
