@@ -74,7 +74,7 @@
           console.log("Failed to retrieve ThingSpeak data");
         }    
 	      console.log(data);
-      if (data[0] > 25){
+      if (Integer.parseInt(data[0]) > 25){
 	   addTalkBackCommand("TURN_ON");
       }
       };
