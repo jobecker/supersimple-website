@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ThingSpeak Data Display and TalkBack Commands</title>
+</head>
+<body>
+  <h1>ThingSpeak Data Display and TalkBack Commands</h1>
+
+  <table id="data-table">
+    <tr>
+      <th>Field 1</th>
+      <!-- Add more table headers for additional fields if necessary -->
+    </tr>
+  </table>
+
+  <button id="button1">TURN_ON</button>
+  <button id="button2">TURN_OFF</button>
+
+  <script>
+    // Function to handle button click and add talkback command
+    function addTalkBackCommand(command) {
+      var apiKey = "NDM7ENHH0Q3QCWNC";
+      var talkBackID = "48996";
+      var url = "https://api.thingspeak.com/talkbacks/" + talkBackID + "/commands.json";
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      xhr.onload = function() {
+        if (xhr.status === 201) {
+          console.log("Command added successfully");
+        } else {
+          console.log("Failed to add command");
+        }
+      };
+
+      var data = "api_key=" + apiKey + "&command_string=" + encodeURIComponent(command);
+      xhr.send(data);
+    }
+
+    // Function to retrieve ThingSpeak data and populate the table
+    function retrieveThingSpeakData() {
+      var apiKey = "C3KG4II90B83FHWP";
+      var channelID = "2111524";
+      var fieldCount = 1;
+      var results = 10;
+      var url = "https://api.thingspeak.com/channels/" + channelID + "/feeds.json?api_key=" + apiKey + "&results=" + results;
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url, true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          var feeds = response.feeds;
+          var data = [];
+
+          for (var i = 0; i < feeds.length; i++) {
+            var feed = feeds[i];
+            var rowData = [];
+
+            for (var j = 1; j <= fieldCount; j++) {
+              var field = "field" + j;
+              rowData.push(feed[field]);
+            }
+
+            data.push(rowData);
+          }
+
+          updateTableWithData(data);
+        } else {
+          console.log("Failed to retrieve ThingSpeak data");
+        }
+      };
+
+      xhr.send();
+    }
+
+    // Function to update the table with ThingSpeak data
+    function updateTableWithData(data) {
+      var dataTable = document.getElementById("data-table");
+
+      // Clear existing table rows
+      dataTable.innerHTML = "";
+
+      // Loop through the data and create table rows
+      for (var i = 0; i < data.length; i++) {
+        var row = document.createElement("tr");
+
+        for (var j = 0; j < data[i].length; j++) {
+          var cell = document.createElement("td");
+          cell.textContent = data[i][j];
+          row.appendChild(cell);
+        }
+
+        dataTable.appendChild(row);
+      }
+    }
+
+    // Add event listener when the DOM content is loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      // Add event listener to button 1
+      var button1 = document.getElementById("button1");
+      button1.addEventListener("click", function() {
+        addTalkBackCommand("TURN_ON");
+      });
+
+      // Add event listener to button 2
+      var button2 = document.getElementById("button2");
+      button2.addEventListener("click", function() {
+        addTalkBackCommand("TURN_OFF");
+      });
+
+      // Retrieve ThingSpeak data and populate the table
+      retrieveThingSpeakData();
+    });
+  </script>
+</body>
+</html>
