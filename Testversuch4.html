@@ -9,6 +9,7 @@
   <table id="data-table">
     <tr>
       <th>Field 1</th>
+      <th>Field 2</th>
       <!-- Add more table headers for additional fields if necessary -->
     </tr>
   </table>
@@ -43,7 +44,7 @@
     function retrieveThingSpeakData() {
       var apiKey = "C3KG4II90B83FHWP";
       var channelID = "2111524";
-      var fieldCount = 1;
+      var fieldCount = 2;
       var results = 1;
       var url = "https://api.thingspeak.com/channels/" + channelID + "/feeds.json?api_key=" + apiKey + "&results=" + results;
 
